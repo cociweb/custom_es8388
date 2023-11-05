@@ -17,7 +17,7 @@ void ES8388Component::setup() {
   // mute DAC
   this->write_byte(0x19, 0x04);
   // mute ADC
-  //this->write_byte(0x0F, 0x30);
+  this->write_byte(0x0F, 0x20);
   // powerup
   this->write_byte(0x01, 0x50);
   this->write_byte(0x02, 0x00);
