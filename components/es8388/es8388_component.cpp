@@ -15,7 +15,7 @@ void ES8388Component::setup() {
   WRITE_PERI_REG(PIN_CTRL, READ_PERI_REG(PIN_CTRL) & 0xFFFFFFF0);
 
   // mute DAC
-  this->write_byte(0x19, 0x24);
+  this->write_byte(0x19, 0x04);
   // mute ADC
   this->write_byte(0x0F, 0x30);
   // powerup
@@ -111,8 +111,8 @@ void ES8388Component::setup() {
   this->write_byte(0x31, 0x1C);
   // unmute ADC with fade in
   this->write_byte(0x0F, 0x60);
-  // unmute with DAC fade in
-  this->write_byte(0x19, 0x20);
+  // unmute DAC
+  this->write_byte(0x19, 0x00);
 }
 
 }  // namespace es8388
