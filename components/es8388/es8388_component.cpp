@@ -1,7 +1,5 @@
 //https://dl.radxa.com/rock2/docs/hw/ds/ES8388%20user%20Guide.pdf
 //https://docs.google.com/spreadsheets/d/1_UdXtrtpj_dzi36CSwv5tBphtGsBrY2Npdi79h1dYUk/edit#gid=0
-
-
 #include "es8388_component.h"
 #include "esphome/core/hal.h"
 
@@ -14,10 +12,8 @@ void ES8388Component::setup() {
   PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO0_U, FUNC_GPIO0_CLK_OUT1);
   WRITE_PERI_REG(PIN_CTRL, READ_PERI_REG(PIN_CTRL) & 0xFFFFFFF0);
 
-  // mute DAC
+  // mute
   this->write_byte(0x19, 0x04);
-  // mute ADC
-  this->write_byte(0x0F, 0x20);
   // powerup
   this->write_byte(0x01, 0x50);
   this->write_byte(0x02, 0x00);
@@ -47,10 +43,10 @@ void ES8388Component::setup() {
 
   // ADC poweroff
   this->write_byte(0x03, 0xFF);
-
+  
   // ADC amp 24dB original
   //this->write_byte(0x09, 0x88);
-
+  
   //@nightdav
   this->write_byte(0x09, 0x77); // +21dB : recommended value for ALC & voice recording
 
@@ -60,7 +56,7 @@ void ES8388Component::setup() {
 
   //@nightdav
   // Mic input : L-R differential
-  this->write_byte(0x0A, 0xF0);
+  this->write_byte(0x0A, 0xF0);  
 
   //original
   // ADC mono left
@@ -68,7 +64,7 @@ void ES8388Component::setup() {
 
   //@nightdav
   // set to Mono Right
-  this->write_byte(0x0B, 0x10);
+  this->write_byte(0x0B, 0x10);  
 
 
   // i2S 16b
@@ -78,7 +74,7 @@ void ES8388Component::setup() {
   // ADC Volume
   this->write_byte(0x10, 0x00);
   this->write_byte(0x11, 0x00);
-
+  
   // ALC OFF  original
   //this->write_byte(0x03, 0x09);
   //this->write_byte(0x2B, 0x80);
@@ -91,27 +87,25 @@ void ES8388Component::setup() {
   this->write_byte(0x15, 0x06); // Reg 0x15 = 0x06(ALC mode)
   this->write_byte(0x16, 0xc3); // Reg 0x16 = 0xc3(nose gate = -40.5dB, NGG = 0x01(mute ADC))
 
-  // Power on ADC
+  // Power on ADC 
   this->write_byte(0x03, 0x09);
   this->write_byte(0x2B, 0x80);
-
-
+  
+  
   this->write_byte(0x02, 0xF0);
   delay(1);
   this->write_byte(0x02, 0x00);
   // DAC power-up LOUT1/ROUT1 and LOUT2/ROUT2 enabled
   this->write_byte(0x04, 0x3C);
   this->write_byte(0x03, 0x00);
-
+  
   // DAC volume max
   this->write_byte(0x2E, 0x1C);
   this->write_byte(0x2F, 0x1C);
   // Headphone volume max
   this->write_byte(0x30, 0x1C);
   this->write_byte(0x31, 0x1C);
-  // unmute ADC with fade in
-  //this->write_byte(0x0F, 0x60);
-  // unmute DAC
+  // unmute
   this->write_byte(0x19, 0x00);
 }
 
